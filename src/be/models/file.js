@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 export const fileSchema = new Schema(
   {
     tanzeem_file_no: {
-      type: String,
+      type: Number,
       required: [true, "tanzeem_file_no is missing"]
     },
     member_ids: [

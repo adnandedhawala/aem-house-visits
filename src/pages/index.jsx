@@ -11,7 +11,7 @@ const { Content } = Layout;
 
 export default function Home() {
   const { showLoader, toggleLoader, setUserData } = useGlobalContext();
-  const [form] = Form.useForm();
+  const [loginForm] = Form.useForm();
   const router = useRouter();
 
   const { mutate: mutateLogin, isLoading: loginLoading } = useMutation({
@@ -43,7 +43,7 @@ export default function Home() {
         mutateVerifyUser(data);
         saveAuthToken(data.data);
         message.success("Logged in successfully!");
-        form.resetFields();
+        loginForm.resetFields();
       },
       onError: error => {
         message.error(error);
@@ -78,7 +78,7 @@ export default function Home() {
                 onFinish={onFinish}
                 autoComplete="off"
                 layout="vertical"
-                form={form}
+                form={loginForm}
                 className="w-full"
                 size="large"
               >

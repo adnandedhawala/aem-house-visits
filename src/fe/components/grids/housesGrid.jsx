@@ -13,39 +13,20 @@ export const HousesGrid = ({ data }) => {
   );
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const columnDefs = [
-    { field: "_id", headerName: "ITS", flex: 2, minWidth: 100 },
-    { field: "hof_id", headerName: "HOF ITS", flex: 2, minWidth: 120 },
+    { field: "itsId", headerName: "ITS", flex: 2, minWidth: 150 },
     {
       field: "tanzeem_file_no",
       headerName: "File",
-      minWidth: 100
+      minWidth: 100,
+      flex: 1
     },
-    { field: "hof_fm_type", headerName: "HOF/FM", minWidth: 100 },
-    { field: "full_name", headerName: "Name", flex: 3, minWidth: 400 },
-    { field: "first_prefix", headerName: "Prefix", minWidth: 100 },
-    { field: "gender", headerName: "Gender", minWidth: 100 },
-    { field: "idara", headerName: "Idara", flex: 2, minWidth: 100 },
-    { field: "age", headerName: "Age", minWidth: 100 },
-    {
-      field: "d1",
-      headerName: "Daska 1",
-      minWidth: 125
-    },
-    {
-      field: "d2",
-      headerName: "Daska 2",
-      minWidth: 125
-    },
-    {
-      field: "d3",
-      headerName: "Daska 3",
-      minWidth: 125
-    },
-    {
-      field: "is_rahat",
-      headerName: "Rahat",
-      minWidth: 125
-    }
+    { field: "hof_id", headerName: "HOF ITS", flex: 2, minWidth: 150 },
+    { field: "full_name", headerName: "Name", flex: 3, minWidth: 300 },
+    { field: "address", headerName: "Address", flex: 3, minWidth: 300 },
+    { field: "sector", headerName: "Sector", flex: 2, minWidth: 150 },
+    { field: "sub_sector", headerName: "Sub Sector", flex: 2, minWidth: 200 },
+    { field: "status", headerName: "Status", flex: 3, minWidth: 200 },
+    { field: "comments", headerName: "Comments", flex: 4, minWidth: 400 }
   ];
   const defaultColDef = useMemo(() => {
     return {

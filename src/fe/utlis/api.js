@@ -6,7 +6,10 @@ const prefix =
 
 const API = {
   login: "user/auth/login",
-  verify: "user/auth/verify"
+  verify: "user/auth/verify",
+  houses: "/houses",
+  housesVisit: "/houses/visit",
+  member: "/member"
 };
 
 export const getApiUrl = urlName => prefix + get(API, urlName);

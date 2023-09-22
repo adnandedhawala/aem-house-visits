@@ -3,7 +3,7 @@ import {
   getApiUrl,
   getApplicationJsonHeader,
   getAuthToken,
-  handleResponse
+  handleLoginResponse
 } from "../utlis";
 
 export const login = loginInfo => {
@@ -13,7 +13,7 @@ export const login = loginInfo => {
       ...getApplicationJsonHeader()
     },
     body: JSON.stringify({ data: loginInfo })
-  }).then(handleResponse);
+  }).then(handleLoginResponse);
 };
 
 export const logout = () => {
@@ -29,5 +29,5 @@ export const verifyUser = async () => {
       ...getApplicationJsonHeader()
     },
     body: JSON.stringify({ data: accessToken })
-  }).then(handleResponse);
+  }).then(handleLoginResponse);
 };

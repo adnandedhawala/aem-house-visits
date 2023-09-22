@@ -23,8 +23,7 @@ export const MainLayoutHeader = ({
           {pageTitle}
         </h3>
         <Button onClick={handleLogout} type="primary" danger>
-          {" "}
-          Logout{" "}
+          Logout
         </Button>
       </div>
     </Header>

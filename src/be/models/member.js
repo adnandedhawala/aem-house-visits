@@ -16,7 +16,8 @@ export const memberSchema = new Schema(
       required: [true, "gender is missing"]
     },
     hof_id: {
-      type: Number,
+      type: String,
+      ref: "File",
       required: [true, "hof_id is missing"]
     },
     age: {

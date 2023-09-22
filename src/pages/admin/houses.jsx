@@ -1,12 +1,12 @@
 import { USER_ROLES } from "@/appConstants";
-import { logout, useGlobalContext, verifyUser } from "@/fe";
+import { getHouseList, logout, useGlobalContext, verifyUser } from "@/fe";
 import {
   AppHead,
   FullPageLoader,
   HousesGrid,
   MainLayoutHeader
 } from "@/fe/components";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Layout, message } from "antd";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -22,7 +22,7 @@ export default function Houses() {
     router.push("/");
   };
 
-  const { mutate: mutateVerifyUser } = useMutation({
+  const { mutate: mutateVerifyUser, isSuccess } = useMutation({
     mutationKey: "verifyFn",
     mutationFn: () => verifyUser(),
     onError: error => {
@@ -41,6 +41,12 @@ export default function Houses() {
     }
   });
 
+  const { data } = useQuery({
+    queryFn: () => getHouseList(),
+    queryKey: ["getHousesList"],
+    enabled: isSuccess
+  });
+
   useEffect(() => {
     mutateVerifyUser();
   }, []);
@@ -57,7 +63,7 @@ export default function Houses() {
         />
         <Content className="mt-16 px-6">
           <div className="mt-4"></div>
-          <HousesGrid data={[]} />
+          <HousesGrid data={data || []} />
         </Content>
       </Layout>
     </>
