@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable security/detect-object-injection */
 import { Button, Form, Input, Modal, Select, Spin } from "antd";
@@ -90,7 +91,7 @@ export const AddHouseVisitModal = ({
                     name="tanzeem_file_no"
                     rules={[
                       {
-                        pattern: /^\d{4}$/,
+                        pattern: /^\d{1,4}$/,
                         message: "enter valid file!"
                       }
                     ]}
@@ -121,7 +122,7 @@ export const AddHouseVisitModal = ({
                   name="contact"
                   rules={[
                     {
-                      pattern: /^([7-9])\d{9}$/,
+                      pattern: /^(\+\d{1,5}|0)?[7-9]\d{9}$/,
                       message: "enter valid contact number!"
                     }
                   ]}

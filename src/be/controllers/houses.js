@@ -2,7 +2,13 @@
 import { USER_ROLES } from "@/appConstants";
 import housesData from "../../appConstants/houseData.json";
 import { HouseVisits } from "../models";
-import { addHouseSchema, editVisitStatusSchema } from "../validators";
+import {
+  addHouseSchema,
+  bulkEditVisitStatusSchema,
+  editVisitStatusSchema
+} from "../validators";
+
+const dataMissing = "data is missing";
 
 export const bulkHousesUploadController = async (_request, response) => {
   const data = housesData.map(value => ({
@@ -22,7 +28,7 @@ export const bulkHousesUploadController = async (_request, response) => {
 
 export const addHouseController = async (request, response) => {
   const { data } = request.body;
-  if (!data) return response.status(400).send("data is missing");
+  if (!data) return response.status(400).send(dataMissing);
 
   try {
     const houseData = await addHouseSchema.validate(data);
@@ -40,7 +46,7 @@ export const addHouseController = async (request, response) => {
 export const editVisitStatusController = async (request, response) => {
   const { data } = request.body;
   const { houseId } = request.query;
-  if (!data) return response.status(400).send("data is missing");
+  if (!data) return response.status(400).send(dataMissing);
   try {
     const houseData = await editVisitStatusSchema.validate(data);
     try {
@@ -90,5 +96,27 @@ export const getHouseListController = async (request, response) => {
     return response.status(200).send({ data });
   } catch (error) {
     return response.status(500).send(error.message);
+  }
+};
+
+export const bulkEditVisitStatusController = async (request, response) => {
+  const { data } = request.body;
+  if (!data) return response.status(400).send(dataMissing);
+  try {
+    const housesData = await bulkEditVisitStatusSchema.validate(data);
+    const bulkQuery = housesData.map(value => ({
+      updateOne: {
+        filter: { _id: value._id },
+        update: { ...value.fields }
+      }
+    }));
+    try {
+      await HouseVisits.bulkWrite(bulkQuery);
+      return response.status(200).send("visits data updated!");
+    } catch (error) {
+      return response.status(500).send(error.message);
+    }
+  } catch (error) {
+    return response.status(400).send(error.message);
   }
 };

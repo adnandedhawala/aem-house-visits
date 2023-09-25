@@ -1,5 +1,11 @@
 import { USER_ROLES } from "@/appConstants";
-import { getHouseList, logout, useGlobalContext, verifyUser } from "@/fe";
+import {
+  adminEditHouses,
+  getHouseList,
+  logout,
+  useGlobalContext,
+  verifyUser
+} from "@/fe";
 import {
   AppHead,
   FullPageLoader,
@@ -7,15 +13,17 @@ import {
   MainLayoutHeader
 } from "@/fe/components";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Layout, message } from "antd";
+import { Button, Layout, message } from "antd";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const { Content } = Layout;
 
 export default function Houses() {
   const { showLoader } = useGlobalContext();
   const router = useRouter();
+
+  const [dataChanges, setDataChanges] = useState({});
 
   const handleLogout = () => {
     logout();
@@ -41,11 +49,39 @@ export default function Houses() {
     }
   });
 
-  const { data } = useQuery({
+  const { mutate: editHousesdata, isLoading } = useMutation({
+    mutationKey: "adminEditHouses",
+    mutationFn: houseData => adminEditHouses(houseData),
+    onError: error => {
+      message.error(error);
+    },
+    onSuccess: response => {
+      message.success(response);
+      setDataChanges({});
+      refetch();
+    }
+  });
+
+  const {
+    data,
+    refetch,
+    isLoading: getHouseDataLoading
+  } = useQuery({
     queryFn: () => getHouseList(),
     queryKey: ["getHousesList"],
-    enabled: isSuccess
+    enabled: isSuccess,
+    staleTime: Number.POSITIVE_INFINITY
   });
+
+  const handleSaveChanges = () => {
+    const editData = Object.keys(dataChanges).map(value => ({
+      _id: value,
+      fields: {
+        ...dataChanges[value]
+      }
+    }));
+    editHousesdata(editData);
+  };
 
   useEffect(() => {
     mutateVerifyUser();
@@ -54,7 +90,9 @@ export default function Houses() {
   return (
     <>
       <AppHead />
-      {showLoader ? <FullPageLoader /> : null}
+      {showLoader || isLoading || getHouseDataLoading ? (
+        <FullPageLoader />
+      ) : null}
       <Layout className="min-h-screen">
         <MainLayoutHeader
           showBack={false}
@@ -63,7 +101,16 @@ export default function Houses() {
         />
         <Content className="mt-16 px-6">
           <div className="mt-4"></div>
-          <HousesGrid data={data || []} />
+          <div className="flex items-start justify-end w-full mb-4">
+            <Button
+              type="primary"
+              onClick={handleSaveChanges}
+              disabled={Object.keys(dataChanges).length === 0}
+            >
+              Save Changes
+            </Button>
+          </div>
+          <HousesGrid setDataChanges={setDataChanges} data={data || []} />
         </Content>
       </Layout>
     </>

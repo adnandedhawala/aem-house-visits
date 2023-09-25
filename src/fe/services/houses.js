@@ -28,6 +28,17 @@ export const addHouse = async data => {
   }).then(handleResponse);
 };
 
+export const adminEditHouses = async data => {
+  return fetch(getApiUrl("houses"), {
+    method: "PUT",
+    headers: {
+      ...getApplicationJsonHeader(),
+      ...getAuthHeader()
+    },
+    body: JSON.stringify({ data })
+  }).then(handleResponse);
+};
+
 export const editHouseVisitStatus = async (id, data) => {
   return fetch(getApiUrl("housesVisit") + "/" + id, {
     method: "PATCH",

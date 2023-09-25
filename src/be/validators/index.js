@@ -1,3 +1,4 @@
+import { VISIT_STATUS } from "@/appConstants";
 import * as yup from "yup";
 
 export const addHouseSchema = yup.object().shape({
@@ -14,9 +15,25 @@ export const addHouseSchema = yup.object().shape({
 });
 
 export const editVisitStatusSchema = yup.object().shape({
-  status: yup.string().required(),
+  status: yup.string().required().oneOf(Object.values(VISIT_STATUS)),
   comments: yup.string(),
   visited_by_name: yup.string().required(),
   visited_by_contact: yup.string(),
   visit_date: yup.date().required()
 });
+
+export const bulkEditVisitStatusSchema = yup.array().of(
+  yup.object().shape({
+    _id: yup.string().required(),
+    fields: yup
+      .object()
+      .shape({
+        status: yup.string().required().oneOf(Object.values(VISIT_STATUS)),
+        comments: yup.string(),
+        visited_by_name: yup.string(),
+        visited_by_contact: yup.string(),
+        visit_date: yup.date()
+      })
+      .required()
+  })
+);

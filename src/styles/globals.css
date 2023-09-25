@@ -15,3 +15,7 @@
 .form-no-mb .ant-form-item {
   margin-bottom: 8px;
 }
+
+.errorCell{
+  @apply text-red-500 !border !border-red-500 !border-solid;
+}

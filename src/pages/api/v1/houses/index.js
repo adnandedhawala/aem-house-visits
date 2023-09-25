@@ -1,5 +1,7 @@
 import {
   addHouseController,
+  bulkEditVisitStatusController,
+  checkAdmin,
   checkAuth,
   connectDB,
   getHouseListController,
@@ -13,6 +15,8 @@ router
   .use(connectDB)
   .use(checkAuth)
   .get(getHouseListController)
-  .post(addHouseController);
+  .post(addHouseController)
+  .use(checkAdmin)
+  .put(bulkEditVisitStatusController);
 
 export default router.handler(ncErrorHandlers);
